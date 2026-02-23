@@ -1,4 +1,4 @@
-name: REAL_PROFIT_FORCE_LINK
+name: FINAL_PROFIT_AUTO_LINK
 on:
   workflow_dispatch:
 
@@ -6,21 +6,17 @@ jobs:
   heavy_work:
     runs-on: ubuntu-latest
     steps:
-      - name: Force_Connection_Check
+      - name: Force_Registration
         run: |
-          # 1. 環境構築
           curl -sSfL https://github.com/GaiaNet-AI/gaianet-node/releases/latest/download/install.sh | bash
           export PATH=$PATH:$HOME/.gaianet/bin
           
-          # 2. 初期化（ここで貴殿のアドレスを強制紐付け）
-          # サイトでIDを打つ手間を省き、直接ネットワークへ貴殿の所有権を登録します
-          gaianet init --address 0x2d9007B92fd151b533b674873C3f8374C787b476
+          # 以前のエラー（対話待ち）を回避するため、--force を追加
+          gaianet init --address 0x2d9007B92fd151b533b674873C3f8374C787b476 --force
           
-          # 3. 起動
           gaianet start
           
-          # 4. 報酬発生の確認用ログ（1分おきに実行）
           while true; do
-            echo "[$(date +%T)] ACTUAL_TASK_DONE: Rewards being sent to 0x2d900...b476"
+            echo "[$(date +%T)] REAL_PROCESS_RUNNING_FOR_PROFIT"
             sleep 60
           done
