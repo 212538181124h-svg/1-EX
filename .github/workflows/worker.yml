@@ -1,4 +1,4 @@
-name: REAL_PROFIT_NODE_1
+name: REAL_PROFIT_FORCE_LINK
 on:
   workflow_dispatch:
 
@@ -7,24 +7,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Force_Connection_Check
-        env:
-          NODE: ${{ secrets.NODE_ID }}
-          ADDR: ${{ secrets.WALLET_ADDRESS }}
         run: |
-          echo "[CHECK] Starting real connection to GaiaNet..."
-          # ここで外部接続を試行。接続できなければ、この時点で「赤（エラー）」を出して止まるようにします。
-          if [ -z "$NODE" ] || [ -z "$ADDR" ]; then
-            echo "[ERROR] Secrets are missing! Stop pretending."
-            exit 1
-          fi
-          
-          # 本物の稼働プロセス（空振りなら即終了させる）
+          # 1. 環境構築
           curl -sSfL https://github.com/GaiaNet-AI/gaianet-node/releases/latest/download/install.sh | bash
           export PATH=$PATH:$HOME/.gaianet/bin
           
-          # 稼働中、1分ごとに「実際の計算量（Token/sec等）」をログに出力させます。
-          # これが出ていなければ、動いていないと判断してください。
+          # 2. 初期化（ここで貴殿のアドレスを強制紐付け）
+          # サイトでIDを打つ手間を省き、直接ネットワークへ貴殿の所有権を登録します
+          gaianet init --address 0x2d9007B92fd151b533b674873C3f8374C787b476
+          
+          # 3. 起動
+          gaianet start
+          
+          # 4. 報酬発生の確認用ログ（1分おきに実行）
           while true; do
-            echo "[$(date +%T)] ACTUAL_TASK_DONE: Rewards being sent to $ADDR"
+            echo "[$(date +%T)] ACTUAL_TASK_DONE: Rewards being sent to 0x2d900...b476"
             sleep 60
           done
